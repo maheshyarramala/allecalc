@@ -19,3 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# ---------------------------------------------------------------------------
+# PERFORMANCE build (perfTest) safety rules.
+# Keep line numbers so crash reports stay readable.
+-keepattributes SourceFile,LineNumberTable
+# Keep the app's own saved-data classes exactly as they are (database and backups).
+-keep class com.example.data.** { *; }
+-keep class com.example.domain.backup.** { *; }
+# Keep the reminder receiver that Android starts by name.
+-keep class com.example.domain.notification.** { *; }

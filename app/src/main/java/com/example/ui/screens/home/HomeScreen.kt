@@ -1,5 +1,7 @@
 package com.example.ui.screens.home
 
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+
 import com.example.ui.theme.performConfiguredHapticFeedback
 
 import android.Manifest
@@ -89,16 +91,16 @@ fun HomeScreen(
   modifier: Modifier = Modifier
 ) {
   val haptic = LocalHapticFeedback.current
-  val totalNetBalance by financeViewModel.totalNetBalance.collectAsState()
-  val totalIncome by financeViewModel.totalIncome.collectAsState()
-  val totalExpense by financeViewModel.totalExpense.collectAsState()
-  val monthlyBudgetLimit by financeViewModel.monthlyBudgetLimit.collectAsState()
-  val currentMonthExpenses by financeViewModel.currentMonthExpenses.collectAsState()
-  val trips by financeViewModel.trips.collectAsState()
-  val expenses by financeViewModel.expenses.collectAsState()
-  val subscriptions by financeViewModel.subscriptions.collectAsState()
-  val accounts by financeViewModel.accountsWithBalances.collectAsState()
-  val creditCardBillReminders by financeViewModel.creditCardBillReminders.collectAsState()
+  val totalNetBalance by financeViewModel.totalNetBalance.collectAsStateWithLifecycle()
+  val totalIncome by financeViewModel.totalIncome.collectAsStateWithLifecycle()
+  val totalExpense by financeViewModel.totalExpense.collectAsStateWithLifecycle()
+  val monthlyBudgetLimit by financeViewModel.monthlyBudgetLimit.collectAsStateWithLifecycle()
+  val currentMonthExpenses by financeViewModel.currentMonthExpenses.collectAsStateWithLifecycle()
+  val trips by financeViewModel.trips.collectAsStateWithLifecycle()
+  val expenses by financeViewModel.expenses.collectAsStateWithLifecycle()
+  val subscriptions by financeViewModel.subscriptions.collectAsStateWithLifecycle()
+  val accounts by financeViewModel.accountsWithBalances.collectAsStateWithLifecycle()
+  val creditCardBillReminders by financeViewModel.creditCardBillReminders.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val creditCardAccounts = remember(accounts) {
     accounts.map { it.account }.filter { it.accountType.equals("Credit Card", ignoreCase = true) }

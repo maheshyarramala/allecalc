@@ -1,4 +1,6 @@
 package com.example.ui.screens.emi
+
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.theme.performConfiguredHapticFeedback
 
 import androidx.compose.animation.AnimatedVisibility
@@ -49,7 +51,7 @@ fun EmiScreen(
   viewModel: EmiViewModel,
   modifier: Modifier = Modifier
 ) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
   val loanViewModel: LoanTrackerViewModel = viewModel()

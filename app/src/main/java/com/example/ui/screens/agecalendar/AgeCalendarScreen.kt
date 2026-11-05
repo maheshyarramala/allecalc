@@ -1,4 +1,6 @@
 package com.example.ui.screens.agecalendar
+
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.theme.performConfiguredHapticFeedback
 
 import android.app.DatePickerDialog
@@ -35,7 +37,7 @@ fun AgeCalendarScreen(
   viewModel: AgeCalendarViewModel,
   modifier: Modifier = Modifier
 ) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
 
@@ -125,7 +127,7 @@ fun AgeCalendarScreen(
 
 @Composable
 private fun AgeCalculatorSection(viewModel: AgeCalendarViewModel) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
   val res = state.ageResult
@@ -355,7 +357,7 @@ private fun LifeStatRow(label: String, value: String) {
 
 @Composable
 private fun DateDifferenceSection(viewModel: AgeCalendarViewModel) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
   val res = state.diffResult
@@ -480,7 +482,7 @@ private fun DateDifferenceSection(viewModel: AgeCalendarViewModel) {
 
 @Composable
 private fun DateAddSubtractSection(viewModel: AgeCalendarViewModel) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
   val res = state.adjResult

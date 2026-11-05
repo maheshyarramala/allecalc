@@ -1,5 +1,7 @@
 package com.example.ui.screens.debt
 
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+
 import android.app.DatePickerDialog
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
@@ -43,8 +45,8 @@ fun DebtTrackerScreen(
   viewModel: DebtTrackerViewModel,
   modifier: Modifier = Modifier
 ) {
-  val state by viewModel.uiState.collectAsState()
-  val userMessage by viewModel.userMessage.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
+  val userMessage by viewModel.userMessage.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val snackbarHostState = remember { SnackbarHostState() }
 
@@ -55,7 +57,7 @@ fun DebtTrackerScreen(
     }
   }
 
-  val userUpiId by viewModel.userUpiId.collectAsState()
+  val userUpiId by viewModel.userUpiId.collectAsStateWithLifecycle()
   var showUpiDialog by remember { mutableStateOf(false) }
 
   Scaffold(

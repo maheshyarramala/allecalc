@@ -1,4 +1,6 @@
 package com.example.ui.screens.splitbill
+
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.theme.performConfiguredHapticFeedback
 
 import android.net.Uri
@@ -52,7 +54,7 @@ fun SplitBillScreen(
   viewModel: SplitBillViewModel,
   modifier: Modifier = Modifier
 ) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
   val clipboard = LocalClipboardManager.current

@@ -1,4 +1,6 @@
 package com.example.ui.screens.history
+
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.theme.performConfiguredHapticFeedback
 
 import androidx.compose.foundation.clickable
@@ -30,7 +32,7 @@ fun FavoritesBottomSheet(
   onOpenTool: (String) -> Unit,
   onDismiss: () -> Unit
 ) {
-  val favoritesList by viewModel.favoritesList.collectAsState()
+  val favoritesList by viewModel.favoritesList.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
   val dateFormat = remember { SimpleDateFormat("dd MMM, hh:mm a", Locale.getDefault()) }

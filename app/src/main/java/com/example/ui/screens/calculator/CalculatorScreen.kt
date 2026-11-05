@@ -1,4 +1,6 @@
 package com.example.ui.screens.calculator
+
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.theme.performConfiguredHapticFeedback
 
 import androidx.compose.animation.AnimatedVisibility
@@ -34,7 +36,7 @@ fun CalculatorScreen(
   viewModel: CalculatorViewModel,
   modifier: Modifier = Modifier
 ) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val haptic = LocalHapticFeedback.current
   val context = LocalContext.current
 

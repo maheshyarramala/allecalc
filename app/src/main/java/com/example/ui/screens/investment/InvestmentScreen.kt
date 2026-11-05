@@ -1,4 +1,6 @@
 package com.example.ui.screens.investment
+
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.theme.performConfiguredHapticFeedback
 
 import androidx.compose.foundation.BorderStroke
@@ -57,7 +59,7 @@ fun InvestmentScreen(
   viewModel: InvestmentViewModel,
   modifier: Modifier = Modifier
 ) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
   var tradeBuyPrice by remember { mutableStateOf("500") }

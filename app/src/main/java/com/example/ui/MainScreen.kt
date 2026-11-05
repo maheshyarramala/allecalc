@@ -1,9 +1,12 @@
 package com.example.ui
 
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+
 import com.example.ui.theme.performConfiguredHapticFeedback
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -118,14 +121,12 @@ fun MainScreen(
   var isPrivacyMode by remember { mutableStateOf(CurrencyFormatter.isPrivacyModeEnabled) }
   val saveableStateHolder = rememberSaveableStateHolder()
 
-  val emiViewModel: EmiViewModel = viewModel()
+  // PERFORMANCE: only the screens needed at launch are created here.
+  // The others (EMI, Interest, Calculator, Utilities, History) are created
+  // the first time you open them, so the app starts faster.
   val investmentViewModel: InvestmentViewModel = viewModel()
   val financeViewModel: FinanceHubViewModel = viewModel()
-  val interestViewModel: InterestCalculatorViewModel = viewModel()
-  val calculatorViewModel: CalculatorViewModel = viewModel()
   val ageCalendarViewModel: AgeCalendarViewModel = viewModel()
-  val utilityViewModel: UtilityViewModel = viewModel()
-  val historyViewModel: HistoryViewModel = viewModel()
 
   val haptic = LocalHapticFeedback.current
 
@@ -148,6 +149,7 @@ fun MainScreen(
   }
 
   if (showFavoritesSheet) {
+    val historyViewModel: HistoryViewModel = viewModel()
     com.example.ui.screens.history.FavoritesBottomSheet(
       viewModel = historyViewModel,
       onOpenTool = { key ->
@@ -163,6 +165,7 @@ fun MainScreen(
   }
 
   if (showHistorySheet) {
+    val historyViewModel: HistoryViewModel = viewModel()
     HistoryBottomSheet(
       viewModel = historyViewModel,
       onDismiss = { showHistorySheet = false }
@@ -170,6 +173,7 @@ fun MainScreen(
   }
 
   if (showHubSheet) {
+    val utilityViewModel: UtilityViewModel = viewModel()
     AllCalculatorsHubSheet(
       onDismiss = { showHubSheet = false },
       items = listOf(
@@ -410,6 +414,7 @@ fun MainScreen(
   ) { paddingValues ->
     Crossfade(
       targetState = currentDestination,
+      animationSpec = tween(durationMillis = 150),
       label = "screenTransition",
       modifier = Modifier
         .fillMaxSize()
@@ -417,7 +422,10 @@ fun MainScreen(
     ) { destination ->
       saveableStateHolder.SaveableStateProvider(destination.name) {
         when (destination) {
-        MainDestination.HOME -> HomeScreen(
+        MainDestination.HOME -> {
+          val emiViewModel: EmiViewModel = viewModel()
+          val utilityViewModel: UtilityViewModel = viewModel()
+          HomeScreen(
           financeViewModel = financeViewModel,
           emiViewModel = emiViewModel,
           utilityViewModel = utilityViewModel,
@@ -447,13 +455,26 @@ fun MainScreen(
             financeViewModel.selectTab(FinanceTab.TRIPS)
             financeViewModel.setShowAddTrip(true)
           }
-        )
-        MainDestination.EMI -> EmiScreen(viewModel = emiViewModel)
+          )
+        }
+        MainDestination.EMI -> {
+          val emiViewModel: EmiViewModel = viewModel()
+          EmiScreen(viewModel = emiViewModel)
+        }
         MainDestination.INVESTMENTS -> InvestmentScreen(viewModel = investmentViewModel)
         MainDestination.FINANCE -> FinanceHubScreen(viewModel = financeViewModel)
-        MainDestination.CALCULATOR -> CalculatorScreen(viewModel = calculatorViewModel)
-        MainDestination.UTILITIES -> UtilityScreen(viewModel = utilityViewModel)
-        MainDestination.INTEREST -> InterestCalculatorScreen(viewModel = interestViewModel)
+        MainDestination.CALCULATOR -> {
+          val calculatorViewModel: CalculatorViewModel = viewModel()
+          CalculatorScreen(viewModel = calculatorViewModel)
+        }
+        MainDestination.UTILITIES -> {
+          val utilityViewModel: UtilityViewModel = viewModel()
+          UtilityScreen(viewModel = utilityViewModel)
+        }
+        MainDestination.INTEREST -> {
+          val interestViewModel: InterestCalculatorViewModel = viewModel()
+          InterestCalculatorScreen(viewModel = interestViewModel)
+        }
         MainDestination.AGE_CALENDAR -> AgeCalendarScreen(viewModel = ageCalendarViewModel)
         }
       }
@@ -622,7 +643,7 @@ private fun AllCalculatorsHubSheet(
 private fun ThemeSettingsBottomSheet(
   onDismiss: () -> Unit
 ) {
-  val themeState by ThemeManager.state.collectAsState()
+  val themeState by ThemeManager.state.collectAsStateWithLifecycle()
   val haptic = LocalHapticFeedback.current
 
   ModalBottomSheet(

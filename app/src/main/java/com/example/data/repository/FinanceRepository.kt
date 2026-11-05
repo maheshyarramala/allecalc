@@ -42,14 +42,19 @@ class FinanceRepository private constructor(context: Context) {
     rawBankAccounts,
     allExpenses
   ) { accs, exps ->
+    // PERFORMANCE: go through the expense list once, instead of twice per account.
+    val expenseByAccount = HashMap<Long, Double>()
+    val incomeByAccount = HashMap<Long, Double>()
+    for (e in exps) {
+      val accId = e.bankAccountId ?: continue
+      when (e.type) {
+        "EXPENSE", "TRANSFER_OUT" -> expenseByAccount[accId] = (expenseByAccount[accId] ?: 0.0) + e.amount
+        "INCOME", "TRANSFER_IN" -> incomeByAccount[accId] = (incomeByAccount[accId] ?: 0.0) + e.amount
+      }
+    }
     accs.map { acc ->
-      val accExpenses = exps.filter {
-        (it.type == "EXPENSE" || it.type == "TRANSFER_OUT") && it.bankAccountId == acc.id
-      }.sumOf { it.amount }
-
-      val accIncome = exps.filter {
-        (it.type == "INCOME" || it.type == "TRANSFER_IN") && it.bankAccountId == acc.id
-      }.sumOf { it.amount }
+      val accExpenses = expenseByAccount[acc.id] ?: 0.0
+      val accIncome = incomeByAccount[acc.id] ?: 0.0
 
       val current = acc.openingBalance + accIncome - accExpenses
 
@@ -98,9 +103,11 @@ class FinanceRepository private constructor(context: Context) {
     val cal = Calendar.getInstance()
     val currMonth = cal.get(Calendar.MONTH)
     val currYear = cal.get(Calendar.YEAR)
+    // PERFORMANCE: reuse one Calendar instead of creating one per expense.
+    val itemCal = Calendar.getInstance()
     exps.filter { item ->
       if (item.type != "EXPENSE") return@filter false
-      val itemCal = Calendar.getInstance().apply { timeInMillis = item.dateTimestamp }
+      itemCal.timeInMillis = item.dateTimestamp
       itemCal.get(Calendar.MONTH) == currMonth && itemCal.get(Calendar.YEAR) == currYear
     }.sumOf { it.amount }
   }.stateIn(

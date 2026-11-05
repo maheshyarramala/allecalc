@@ -1,4 +1,6 @@
 package com.example.ui.screens.utility
+
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.theme.performConfiguredHapticFeedback
 
 import androidx.compose.foundation.background
@@ -37,7 +39,7 @@ fun UtilityScreen(
   viewModel: UtilityViewModel,
   modifier: Modifier = Modifier
 ) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
 
@@ -165,7 +167,7 @@ fun UtilityScreen(
 
 @Composable
 private fun CurrencyCalculatorSection(viewModel: UtilityViewModel) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
 
@@ -652,7 +654,7 @@ private fun EditRateDialog(
 
 @Composable
 private fun UnitConverterSection(viewModel: UtilityViewModel) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
 
@@ -833,7 +835,7 @@ private fun UnitDropdown(
 
 @Composable
 private fun TipSplitSection(viewModel: UtilityViewModel) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
 
@@ -986,7 +988,7 @@ private fun TipSplitSection(viewModel: UtilityViewModel) {
 
 @Composable
 private fun GstTaxSection(viewModel: UtilityViewModel) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
 

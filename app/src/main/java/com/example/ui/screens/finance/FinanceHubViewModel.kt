@@ -15,6 +15,7 @@ import com.example.data.local.entity.ExpenseCategory
 import com.example.data.local.entity.ExpenseRecord
 import com.example.data.local.entity.LoanRecord
 import com.example.data.local.entity.TripRecord
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -105,9 +106,11 @@ class FinanceHubViewModel(application: Application) : AndroidViewModel(applicati
     val cal = Calendar.getInstance()
     val currMonth = cal.get(Calendar.MONTH)
     val currYear = cal.get(Calendar.YEAR)
+    // PERFORMANCE: reuse one Calendar instead of creating one per expense.
+    val itemCal = Calendar.getInstance()
     val monthExpenses = exps.filter { item ->
       if (item.type != "EXPENSE") return@filter false
-      val itemCal = Calendar.getInstance().apply { timeInMillis = item.dateTimestamp }
+      itemCal.timeInMillis = item.dateTimestamp
       itemCal.get(Calendar.MONTH) == currMonth && itemCal.get(Calendar.YEAR) == currYear
     }
     val total = monthExpenses.sumOf { it.amount }
@@ -127,7 +130,10 @@ class FinanceHubViewModel(application: Application) : AndroidViewModel(applicati
         )
       }
       .sortedByDescending { it.totalAmount }
-  }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+  }
+    // PERFORMANCE: do this calculation in the background, not on the screen thread.
+    .flowOn(Dispatchers.Default)
+    .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
   private val prefs = application.getSharedPreferences("omni_calc_finance_prefs", Context.MODE_PRIVATE)
   private val _monthlyBudgetLimit = MutableStateFlow(prefs.getFloat("monthly_budget_limit", 50000f).toDouble())

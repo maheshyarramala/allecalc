@@ -1,4 +1,6 @@
 package com.example.ui.screens.history
+
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.theme.performConfiguredHapticFeedback
 
 import androidx.compose.foundation.layout.*
@@ -29,8 +31,8 @@ fun HistoryBottomSheet(
   viewModel: HistoryViewModel,
   onDismiss: () -> Unit
 ) {
-  val historyList by viewModel.historyList.collectAsState()
-  val selectedFilter by viewModel.selectedFilter.collectAsState()
+  val historyList by viewModel.historyList.collectAsStateWithLifecycle()
+  val selectedFilter by viewModel.selectedFilter.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
   var showClearConfirm by remember { mutableStateOf(false) }

@@ -1,5 +1,7 @@
 package com.example.ui.screens.loan
 
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -49,8 +51,8 @@ fun LoanTrackerScreen(
   viewModel: LoanTrackerViewModel,
   modifier: Modifier = Modifier
 ) {
-  val state by viewModel.uiState.collectAsState()
-  val userMessage by viewModel.userMessage.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
+  val userMessage by viewModel.userMessage.collectAsStateWithLifecycle()
   val snackbarHostState = remember { SnackbarHostState() }
   var loanPendingEmiPayment by remember { mutableStateOf<LoanRecord?>(null) }
 

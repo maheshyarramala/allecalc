@@ -1,4 +1,6 @@
 package com.example.ui.screens.finance
+
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.theme.performConfiguredHapticFeedback
 
 import androidx.compose.animation.AnimatedVisibility
@@ -91,21 +93,21 @@ fun FinanceHubScreen(
   viewModel: FinanceHubViewModel,
   modifier: Modifier = Modifier
 ) {
-  val uiState by viewModel.uiState.collectAsState()
-  val categories by viewModel.categories.collectAsState()
-  val expenses by viewModel.expenses.collectAsState()
-  val bankAccounts by viewModel.bankAccounts.collectAsState()
-  val accountsWithBalances by viewModel.accountsWithBalances.collectAsState()
-  val totalNetBalance by viewModel.totalNetBalance.collectAsState()
-  val totalIncome by viewModel.totalIncome.collectAsState()
-  val totalExpense by viewModel.totalExpense.collectAsState()
-  val trips by viewModel.trips.collectAsState()
-  val subscriptions by viewModel.subscriptions.collectAsState()
-  val allLoans by viewModel.allLoans.collectAsState()
-  val allDebts by viewModel.allDebts.collectAsState()
-  val creditCardBillReminders by viewModel.creditCardBillReminders.collectAsState()
-  val monthlyBudgetLimit by viewModel.monthlyBudgetLimit.collectAsState()
-  val currentMonthExpenses by viewModel.currentMonthExpenses.collectAsState()
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val categories by viewModel.categories.collectAsStateWithLifecycle()
+  val expenses by viewModel.expenses.collectAsStateWithLifecycle()
+  val bankAccounts by viewModel.bankAccounts.collectAsStateWithLifecycle()
+  val accountsWithBalances by viewModel.accountsWithBalances.collectAsStateWithLifecycle()
+  val totalNetBalance by viewModel.totalNetBalance.collectAsStateWithLifecycle()
+  val totalIncome by viewModel.totalIncome.collectAsStateWithLifecycle()
+  val totalExpense by viewModel.totalExpense.collectAsStateWithLifecycle()
+  val trips by viewModel.trips.collectAsStateWithLifecycle()
+  val subscriptions by viewModel.subscriptions.collectAsStateWithLifecycle()
+  val allLoans by viewModel.allLoans.collectAsStateWithLifecycle()
+  val allDebts by viewModel.allDebts.collectAsStateWithLifecycle()
+  val creditCardBillReminders by viewModel.creditCardBillReminders.collectAsStateWithLifecycle()
+  val monthlyBudgetLimit by viewModel.monthlyBudgetLimit.collectAsStateWithLifecycle()
+  val currentMonthExpenses by viewModel.currentMonthExpenses.collectAsStateWithLifecycle()
 
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current

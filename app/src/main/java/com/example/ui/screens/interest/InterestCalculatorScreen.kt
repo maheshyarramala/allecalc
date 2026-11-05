@@ -1,4 +1,6 @@
 package com.example.ui.screens.interest
+
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.theme.performConfiguredHapticFeedback
 
 import androidx.compose.foundation.background
@@ -35,7 +37,7 @@ fun InterestCalculatorScreen(
   viewModel: InterestCalculatorViewModel,
   modifier: Modifier = Modifier
 ) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
 
@@ -129,7 +131,7 @@ fun InterestCalculatorScreen(
 
 @Composable
 private fun SimpleInterestSection(viewModel: InterestCalculatorViewModel) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
   val res = state.siResult
@@ -246,7 +248,7 @@ private fun SimpleInterestSection(viewModel: InterestCalculatorViewModel) {
 
 @Composable
 private fun CompoundInterestSection(viewModel: InterestCalculatorViewModel) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
   val res = state.ciResult
@@ -340,7 +342,7 @@ private fun CompoundInterestSection(viewModel: InterestCalculatorViewModel) {
 
 @Composable
 private fun DoublingPeriodSection(viewModel: InterestCalculatorViewModel) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
   val res = state.doublingResult
@@ -415,7 +417,7 @@ private fun DoublingPeriodSection(viewModel: InterestCalculatorViewModel) {
 
 @Composable
 private fun EffectiveRateSection(viewModel: InterestCalculatorViewModel) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
   val res = state.earResult
@@ -491,7 +493,7 @@ private fun EffectiveRateSection(viewModel: InterestCalculatorViewModel) {
 
 @Composable
 private fun FlatVsReducingSection(viewModel: InterestCalculatorViewModel) {
-  val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsStateWithLifecycle()
   val context = LocalContext.current
   val haptic = LocalHapticFeedback.current
   val res = state.flatVsReducingResult
